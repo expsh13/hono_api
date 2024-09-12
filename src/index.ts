@@ -42,8 +42,6 @@ app.put("/posts/:id", async (c) => {
   const id = c.req.param("id");
   const index = blogPosts.findIndex((p) => p.id === id);
 
-  console.log("koko");
-
   if (index === -1) {
     return c.json({ message: "not found this page" }, 404);
   }
@@ -55,6 +53,19 @@ app.put("/posts/:id", async (c) => {
   blogPosts[index] = { ...blogPosts[index], title, content };
 
   return c.json(blogPosts[index]);
+});
+
+app.delete("/posts/:id", async (c) => {
+  const id = c.req.param("id");
+  const index = blogPosts.findIndex((p) => p.id === id);
+
+  if (index === -1) {
+    return c.json({ message: "not found this page" }, 404);
+  }
+
+  blogPosts = blogPosts.filter((p) => p.id !== id);
+
+  return c.json({ message: "blogPosts deleted" });
 });
 
 export default app;

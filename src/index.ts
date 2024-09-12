@@ -38,4 +38,23 @@ app.post("/posts", async (c) => {
   return c.json(newPost, 201);
 });
 
+app.put("/posts/:id", async (c) => {
+  const id = c.req.param("id");
+  const index = blogPosts.findIndex((p) => p.id === id);
+
+  console.log("koko");
+
+  if (index === -1) {
+    return c.json({ message: "not found this page" }, 404);
+  }
+
+  const { title, content } = await c.req.json<{
+    title: string;
+    content: string;
+  }>();
+  blogPosts[index] = { ...blogPosts[index], title, content };
+
+  return c.json(blogPosts[index]);
+});
+
 export default app;
